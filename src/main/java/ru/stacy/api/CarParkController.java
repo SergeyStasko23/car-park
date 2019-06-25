@@ -11,6 +11,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/api")
+@CrossOrigin
 public class CarParkController {
     private final CarParkService carParkService;
 
@@ -41,6 +42,12 @@ public class CarParkController {
     @GetMapping("/car-parks/{carParkId}")
     public Optional<CarParkDto> findCarParkById(@PathVariable Long carParkId) {
         return carParkService.findCarParkById(carParkId);
+    }
+
+    // http://localhost:8080/api/cars/1/car-parks
+    @GetMapping("/cars/{carId}/car-parks")
+    public Optional<CarParkDto> findCarParkByCarId(@PathVariable Long carId) {
+        return carParkService.findCarParkByCarId(carId);
     }
 
     // http://localhost:8080/api/car-parks

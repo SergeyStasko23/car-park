@@ -2,6 +2,7 @@ package ru.stacy.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import ru.stacy.entity.Car;
+import ru.stacy.entity.CarPark;
 
 import java.util.List;
 

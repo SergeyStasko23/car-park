@@ -11,6 +11,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin
 public class CarOwnerController {
     private final CarOwnerService carOwnerService;
 
@@ -19,32 +20,45 @@ public class CarOwnerController {
         this.carOwnerService = carOwnerService;
     }
 
+    // http://localhost:8080/api/car-owners
     @PostMapping("/car-owners")
     public CarOwner createCarOwner(@RequestBody CarOwner carOwner) {
         return carOwnerService.createCarOwner(carOwner);
     }
 
+    // http://localhost:8080/api/car-owners
     @GetMapping("/car-owners")
     public List<CarOwnerDto> findAllCarOwners() {
         return carOwnerService.findAllCarOwners();
     }
 
+    // http://localhost:8080/api/car-owners/1
     @GetMapping("/car-owners/{carOwnerId}")
     public Optional<CarOwnerDto> findCarOwnerById(@PathVariable Long carOwnerId) {
         return carOwnerService.findCarOwnerById(carOwnerId);
     }
 
+    // http://localhost:8080/api/cars/1/car-owners
+    @GetMapping("/cars/{carId}/car-owners")
+    public Optional<CarOwnerDto> findCarOwnerByCarId(@PathVariable Long carId) {
+        return carOwnerService.findCarOwnerByCarId(carId);
+    }
+
+    // http://localhost:8080/api/car-owners
     @PutMapping("/car-owners")
     public CarOwner updateCarOwner(@RequestBody CarOwner carOwnerUpd) {
         return carOwnerService.updateCarOwner(carOwnerUpd);
     }
 
+
+    // http://localhost:8080/api/car-owners/1
     @PutMapping("/car-owners/{carOwnerId}")
     public CarOwner updateCarOwnerById(@PathVariable Long carOwnerId, @RequestBody CarOwner carOwnerUpd) {
         return carOwnerService.updateCarOwnerById(carOwnerId, carOwnerUpd);
     }
 
-    @DeleteMapping("/car-parks/{carOwnerId}")
+    // http://localhost:8080/api/car-owners/1
+    @DeleteMapping("/car-owners/{carOwnerId}")
     public String deleteCarOwnerById(@PathVariable Long carOwnerId) {
         return carOwnerService.deleteCarOwnerById(carOwnerId);
     }

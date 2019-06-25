@@ -9,6 +9,7 @@ import ru.stacy.dto.CarOwnerDto;
 import ru.stacy.entity.Car;
 import ru.stacy.entity.CarOwner;
 import ru.stacy.repository.CarOwnerRepository;
+import ru.stacy.repository.CarRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,10 +18,12 @@ import java.util.Optional;
 @Service
 public class CarOwnerService {
     private final CarOwnerRepository carOwnerRepository;
+    private final CarRepository carRepository;
 
     @Autowired
-    public CarOwnerService(CarOwnerRepository carOwnerRepository) {
+    public CarOwnerService(CarOwnerRepository carOwnerRepository, CarRepository carRepository) {
         this.carOwnerRepository = carOwnerRepository;
+        this.carRepository = carRepository;
     }
 
     public CarOwner createCarOwner(CarOwner carOwner) {
@@ -44,6 +47,17 @@ public class CarOwnerService {
         Assert.notNull(carOwnerId, "CarOwnerDto must not be null");
 
         CarOwner entity = carOwnerRepository.getOne(carOwnerId);
+        CarOwnerDto dto = new CarOwnerDto();
+
+        BeanUtils.copyProperties(entity, dto);
+
+        return Optional.of(dto);
+    }
+
+    public Optional<CarOwnerDto> findCarOwnerByCarId(Long carId) {
+        Car car = carRepository.getOne(carId);
+
+        CarOwner entity = car.getCarOwner();
         CarOwnerDto dto = new CarOwnerDto();
 
         BeanUtils.copyProperties(entity, dto);

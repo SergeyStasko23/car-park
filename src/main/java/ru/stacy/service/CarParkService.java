@@ -5,8 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import ru.stacy.dto.CarParkDto;
+import ru.stacy.entity.Car;
 import ru.stacy.entity.CarPark;
 import ru.stacy.repository.CarParkRepository;
+import ru.stacy.repository.CarRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,10 +17,12 @@ import java.util.Optional;
 @Service
 public class CarParkService {
     private final CarParkRepository carParkRepository;
+    private final CarRepository carRepository;
 
     @Autowired
-    public CarParkService(CarParkRepository carParkRepository) {
+    public CarParkService(CarParkRepository carParkRepository, CarRepository carRepository) {
         this.carParkRepository = carParkRepository;
+        this.carRepository = carRepository;
     }
 
     public CarPark createCarPark(CarPark carPark) {
@@ -46,6 +50,17 @@ public class CarParkService {
         Assert.notNull(carParkId, "CarParkDto must not be null");
 
         CarPark entity = carParkRepository.getOne(carParkId);
+        CarParkDto dto = new CarParkDto();
+
+        BeanUtils.copyProperties(entity, dto);
+
+        return Optional.of(dto);
+    }
+
+    public Optional<CarParkDto> findCarParkByCarId(Long carId) {
+        Car car = carRepository.getOne(carId);
+
+        CarPark entity = car.getCarPark();
         CarParkDto dto = new CarParkDto();
 
         BeanUtils.copyProperties(entity, dto);
